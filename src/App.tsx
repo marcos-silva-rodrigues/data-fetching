@@ -1,38 +1,19 @@
-import axios from 'axios';
-import { useQuery } from 'react-query';
-import { useFetch } from './hooks/useFetch';
+import { Routes, Route  } from 'react-router-dom';
+import { Repo } from './pages/Repo';
+import { Repos } from './pages/Repos';
 
-type Repos = {
+export type Repos = {
   full_name: string;
   description: string;
 }
 
-function App() {
-  // const { data: repositories, isFetching, error } = useFetch<Repos[]>(
-  //   "https://api.github.com/users/markus-del/repos"
-  // );
-
-  const { data: repositories, isFetching } = useQuery<Repos[]>('repos', async () => {
-    const response = await axios.get('https://api.github.com/users/markus-del/repos');
-    return response.data;
-  }, {
-    refetchOnWindowFocus: false,
-  });
-
+export function App() {
   return (
-    <ul>
-      {isFetching && <p>Carregando ...</p>}
-      {/* {error && <p>{error.message}</p>} */}
-      {repositories?.map(repo => {
-        return (
-          <li key={repo.full_name}>
-              <strong>{repo.full_name}</strong>
-              <p>{repo.description}</p>
-          </li>
-        )
-      })}
-    </ul>
-  )
+    <Routes>
+      <Route path="/" element={<Repos />} />
+      <Route path="/repos/*" element={<Repo />} />
+    </Routes>
+  );
+
 }
 
-export default App;
